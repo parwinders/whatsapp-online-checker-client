@@ -29,7 +29,7 @@ const online = () => {
       console.log(JSON.stringify(response.data));
       window.ps3response = response;
       setProgress(false);
-      f7.dialog.alert(response.data.status);
+      f7.dialog.alert(response.data.status, "Target Status");
     });
   };
   ////////////////////////////////////////
@@ -54,7 +54,7 @@ const online = () => {
           return true;
         } else {
           console.log("status code is not 201 =/= " + code);
-          await sleep(2000);
+          await sleep(5000);
           return getresponse(resurl);
         }
       })
