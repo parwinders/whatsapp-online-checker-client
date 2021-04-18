@@ -81,14 +81,14 @@ const online = () => {
         window.psresponse = psresponse;
         if (psresponse.data.name) {
           var postaddr = psresponse.data.name;
-          var resurl = `https://online-checker-b0783-default-rtdb.firebaseio.com/active/${postaddr}/code.json`;
+          var resurl = `https://online-checker-b0783-default-rtdb.firebaseio.com/server-response/${postaddr}/code.json`;
           window.resurl = resurl;
           window.getresponse = getresponse;
 
           window.bug = await getresponse(resurl);
           if (window.bug) {
             console.log("getresponse returned true");
-            var resurl = `https://online-checker-b0783-default-rtdb.firebaseio.com/active/${postaddr}/response.json`;
+            var resurl = `https://online-checker-b0783-default-rtdb.firebaseio.com/server-response/${postaddr}/response.json`;
             getstatus(resurl);
           }
         }
