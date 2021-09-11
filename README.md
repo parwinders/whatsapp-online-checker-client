@@ -1,5 +1,7 @@
 # WhatsUp - WhatsApp Online Last seen Tracker 
 
+`Demo`: https://parwinders.github.io/whatsapp-online-checker-client/
+
 ## Framework7 CLI Options
 
 Framework7 app created with following options:
