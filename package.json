@@ -36,6 +36,7 @@
     "framework7-icons": "^4.0.2",
     "framework7-react": "^6.0.15",
     "gh-pages": "^3.1.0",
+    "io.princey.whatsup": "file:cordova",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

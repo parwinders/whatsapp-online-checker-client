@@ -20,17 +20,19 @@ const online = () => {
     const [targetnumber, setTargetnumber] = useState("");
 
     const getstatus = async () => {
+        await axios.post(
+            "https://serene-sierra-48167.herokuapp.com/" + targetnumber
+        );
         await axios
             .get("https://serene-sierra-48167.herokuapp.com/" + targetnumber)
             .then((res) => {
                 console.log(res.data);
-                setProgress(false);
                 f7.dialog.alert(res.data.status, "Target Status");
             })
             .catch((err) => {
                 console.log(err.response.data);
                 f7.dialog.alert(err.response.data.msg, "Error");
-            })
+            });
     };
     // sleep example
     function sleep(ms) {
