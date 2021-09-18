@@ -37,8 +37,8 @@ const online = () => {
         console.log("saved", activeData);
     }, [activeData]);
 
-    const enterKey  = ()=>{
-        document.getElementsByName("enter")[0].click();
+    const enterKey  = (e)=>{
+        if (e.key==="Enter") document.getElementsByName("enter")[0].click();
     }
     const removeActive = (num) => {
         setActiveData(activeData.filter((user) => !(user.number === num)));
