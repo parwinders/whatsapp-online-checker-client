@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
     f7,
@@ -13,26 +13,59 @@ import {
     ListButton,
     Progressbar,
 } from "framework7-react";
+import Active from "./active";
 
 const online = () => {
     const [progress, setProgress] = useState(false);
-    const [targetname, setTargetname] = useState("");
-    const [targetnumber, setTargetnumber] = useState("");
+    const [targetname, setTargetname] = useState("default");
+    const [targetnumber, setTargetnumber] = useState("917982625205");
+    const [activeData, setActiveData] = useState([
+        { name: "jio", number: "917982625205", status: "" },
+        { name: "saran", number: "917982044126", status: "" },
+    ]);
 
-    const getstatus = async () => {
-        await axios.post(
-            "https://serene-sierra-48167.herokuapp.com/" + targetnumber
-        );
-        await axios
-            .get("https://serene-sierra-48167.herokuapp.com/" + targetnumber)
-            .then((res) => {
-                console.log(res.data);
-                f7.dialog.alert(res.data.status, "Target Status");
-            })
-            .catch((err) => {
-                console.log(err.response.data);
-                f7.dialog.alert(err.response.data.msg, "Error");
-            });
+    const getstatus = async (
+        targetname = "defaultName",
+        targetnumber = "917982625205",
+        base = "https://serene-sierra-48167.herokuapp.com/",
+        url = base + targetnumber
+    ) => {
+        try {
+            console.log("initial req for", targetnumber);
+            await axios.post(url);
+            await axios
+                .get(url)
+                .then((res) => {
+                    const userData = {};
+                    const status =
+                        res.data.status === "available" ? "online" : "offline";
+                    console.log(
+                        "initial request success for ",
+                        targetname,
+                        status
+                    );
+                    userData.name = targetname;
+                    userData.status = status;
+                    userData.number = targetnumber;
+                    console.log({ userData });
+                    setActiveData([...activeData, userData]);
+                    f7.dialog.alert(status, `${targetname} Status`);
+                    // const clearIntervalID = setInterval(
+                    //     () => updateStatus(url, userData, activeData),
+                    //     5 * 1000
+                    // );
+                })
+                .catch((err) => {
+                    console.log(
+                        "initial req error for ",
+                        targetnumber,
+                        err.response.data
+                    );
+                    f7.dialog.alert(err.response.data.msg, "Error");
+                });
+        } catch (error) {
+            console.log(error);
+        }
     };
     // sleep example
     function sleep(ms) {
@@ -64,7 +97,7 @@ const online = () => {
                     onClick={async () => {
                         if (!progress) {
                             setProgress(true);
-                            await getstatus();
+                            await getstatus(targetname, targetnumber);
                             setProgress(false);
                         } else {
                         }
@@ -81,6 +114,7 @@ const online = () => {
                     <br />
                     Report the bugs at python3pro@gmail.com
                 </BlockFooter>
+                <Active userList={activeData} />
             </List>
         </Page>
     );
