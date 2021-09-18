@@ -4,73 +4,80 @@ import {
     f7,
     Page,
     Navbar,
-    BlockTitle,
     BlockFooter,
     useStore,
     Button,
+    Col,
+    Preloader,
+    Block,
     List,
     ListInput,
     ListButton,
     Progressbar,
+    BlockTitle,
 } from "framework7-react";
 import Active from "./active";
 
 const online = () => {
     const [progress, setProgress] = useState(false);
-    const [targetname, setTargetname] = useState("default");
-    const [targetnumber, setTargetnumber] = useState("917982625205");
-    const [activeData, setActiveData] = useState([
-        { name: "jio", number: "917982625205", status: "" },
-        { name: "saran", number: "917982044126", status: "" },
-    ]);
+    const [targetname, setTargetname] = useState("");
+    const [targetnumber, setTargetnumber] = useState("");
+    const [activeData, setActiveData] = useState([]);
 
+    useEffect(() => {
+        let oldData;
+        if ((oldData = localStorage.getItem("persistData"))) {
+            setActiveData(JSON.parse(oldData));
+            console.log("oldData found setting oldData active", oldData);
+        }
+    }, []);
+    useEffect(() => {
+        localStorage.setItem("persistData", JSON.stringify(activeData));
+        console.log("saved", activeData);
+    }, [activeData]);
+
+    const removeActive = (num) => {
+        setActiveData(activeData.filter((user) => !(user.number === num)));
+    };
     const getstatus = async (
-        targetname = "defaultName",
-        targetnumber = "917982625205",
+        targetname = "target",
+        targetnumber = "",
         base = "https://serene-sierra-48167.herokuapp.com/",
         url = base + targetnumber
     ) => {
         try {
             console.log("initial req for", targetnumber);
             await axios.post(url);
+            await new Promise((res) => setTimeout(res, 500));
             await axios
                 .get(url)
                 .then((res) => {
                     const userData = {};
                     const status =
                         res.data.status === "available" ? "online" : "offline";
-                    console.log(
-                        "initial request success for ",
-                        targetname,
-                        status
-                    );
                     userData.name = targetname;
-                    userData.status = status;
                     userData.number = targetnumber;
-                    console.log({ userData });
+                    userData.status = status;
+                    console.log(userData);
                     setActiveData([...activeData, userData]);
                     f7.dialog.alert(status, `${targetname} Status`);
-                    // const clearIntervalID = setInterval(
-                    //     () => updateStatus(url, userData, activeData),
-                    //     5 * 1000
-                    // );
+                    setTargetname(""), setTargetnumber("");
                 })
                 .catch((err) => {
-                    console.log(
+                    console.error(
                         "initial req error for ",
                         targetnumber,
                         err.response.data
                     );
-                    f7.dialog.alert(err.response.data.msg, "Error");
+                    f7.dialog.alert(
+                        err.response.data.msg + " on whatsapp ? ",
+                        "Error"
+                    );
                 });
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
-    // sleep example
-    function sleep(ms) {
-        return new Promise((resolve) => setTimeout(resolve, ms));
-    }
 
     return (
         <Page name='Status check'>
@@ -96,6 +103,11 @@ const online = () => {
                     title='Check Status'
                     onClick={async () => {
                         if (!progress) {
+                            if (targetnumber.trim() === "")
+                                return f7.dialog.alert(
+                                    "is there a  PhoneNumber ?",
+                                    " Server crashed"
+                                );
                             setProgress(true);
                             await getstatus(targetname, targetnumber);
                             setProgress(false);
@@ -109,13 +121,28 @@ const online = () => {
                             <Progressbar infinite color='multi' />
                         </p>
                     )}
-                    Number requires country code for ex- 91[YourNumberHere] for
-                    India
+                    {
+                        "Number requires country code for an example 91|YourNumberHere| for India"
+                    }
                     <br />
-                    Report the bugs at python3pro@gmail.com
+                    {
+                        "Report the bugs at Python3pro@gmail.com or just curse and Restart, works Everytime !"
+                    }
+                    <br />
                 </BlockFooter>
-                <Active userList={activeData} />
             </List>
+            {activeData.length > 0 && (
+                <Block className='row'>
+                    {" "}
+                    <Col>WatchList</Col>
+                    {activeData.length > 0 && (
+                        <Col>
+                            <Preloader color='green' />
+                        </Col>
+                    )}
+                </Block>
+            )}
+            <Active userList={activeData} remove={removeActive} />
         </Page>
     );
 };

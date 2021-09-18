@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ListItem } from "framework7-react";
 import axios from "axios";
 
-const UserElement = ({ user }) => {
+const UserElement = ({ user, remove }) => {
     const [userP, setUserP] = useState(user);
 
     useEffect(() => {
@@ -43,13 +43,16 @@ const UserElement = ({ user }) => {
     return (
         <ListItem
             style={{
+                listStyle: "none",
                 color: userP.status === "online" && "var(--f7-color-lime-tint)",
             }}
             title={userP.name}
-            link=''
+            onClick={() => remove(user.number)}
+            link='#'
+            header='name'
+            after={userP.status === "online" ? "ONLINE" : "offline"}
         >
             {" "}
-            {userP.status}
         </ListItem>
     );
 };
