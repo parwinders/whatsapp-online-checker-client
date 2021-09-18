@@ -3,7 +3,7 @@
 `Demo`: https://parwinders.github.io/whatsapp-online-checker-client/
 
 ## Startup
-``` npm run dev ```
+```  ```
 
 ## NPM Scripts
 
