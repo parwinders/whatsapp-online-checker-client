@@ -7,47 +7,7 @@
 Framework7 app created with following options:
 
 ```
-{
-  "cwd": "C:\\Users\\Parvinder\\Desktop\\whatsapp\\framework7",
-  "type": [
-    "cordova",
-    "web"
-  ],
-  "name": "WhatsUp - WhatsApp Online Last seen Tracker ",
-  "framework": "react",
-  "template": "tabs",
-  "bundler": "webpack",
-  "cssPreProcessor": false,
-  "theming": {
-    "customColor": false,
-    "color": "#007aff",
-    "darkTheme": true,
-    "iconFonts": true,
-    "fillBars": false
-  },
-  "customBuild": false,
-  "webpack": {
-    "developmentSourceMap": true,
-    "productionSourceMap": true,
-    "hashAssets": false,
-    "preserveAssetsPaths": false,
-    "inlineAssets": true
-  },
-  "pkg": "io.princey.whatsup",
-  "cordova": {
-    "folder": "cordova",
-    "platforms": [
-      "ios",
-      "android",
-      "electron"
-    ],
-    "plugins": [
-      "cordova-plugin-statusbar",
-      "cordova-plugin-keyboard",
-      "cordova-plugin-splashscreen"
-    ]
-  }
-}
+
 ```
 
 ## NPM Scripts
