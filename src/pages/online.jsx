@@ -25,6 +25,7 @@ const online = () => {
     const [activeData, setActiveData] = useState([]);
 
     useEffect(() => {
+        document.getElementsByName("targetnumber")[0].addEventListener('keypress',enterKey )
         let oldData;
         if ((oldData = localStorage.getItem("persistData"))) {
             setActiveData(JSON.parse(oldData));
@@ -36,6 +37,9 @@ const online = () => {
         console.log("saved", activeData);
     }, [activeData]);
 
+    const enterKey  = ()=>{
+        document.getElementsByName("enter")[0].click();
+    }
     const removeActive = (num) => {
         setActiveData(activeData.filter((user) => !(user.number === num)));
     };
@@ -100,6 +104,7 @@ const online = () => {
             </List>
             <List>
                 <ListButton
+                    name="enter"
                     title='Check Status'
                     onClick={async () => {
                         if (!progress) {
