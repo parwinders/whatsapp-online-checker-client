@@ -25,11 +25,29 @@ const online = () => {
     const [targetname, setTargetname] = useState("");
     const [targetnumber, setTargetnumber] = useState("");
     const [activeData, setActiveData] = useState([]);
-
+    // On component mount
     useEffect(() => {
+        // Get version Match:Update
+        let fetch = axios.get(
+            "https://raw.githubusercontent.com/parwinders/version/main/README.md"
+        );
+        fetch.then((res) => {
+            let gotVer;
+            console.info("Latest version:", (gotVer = res.data.split("\n")[0]));
+            /1.0.0/.test(gotVer)
+                ? console.info("Already latest version")
+                : f7.dialog.alert(
+                      "Download the latest version",
+                      "New update Available"
+                  );
+            console.log(gotVer, "matching", "1.0.0");
+        });
+        // Add Event listener key for Enter (web and desktop version ):comfort
         document
             .getElementsByName("targetnumber")[0]
             .addEventListener("keypress", enterKey);
+
+        // Load persistent Data for State Recovery : state mechanism(localStorage)
         let oldData;
         if ((oldData = localStorage.getItem("persistData"))) {
             try {
@@ -46,18 +64,23 @@ const online = () => {
             }
         }
     }, []);
+
     useEffect(() => {
+        // Saving State to localStorage on each new Contact update (del/add)
         localStorage.setItem("persistData", JSON.stringify(activeData));
         console.log("saved", activeData);
     }, [activeData]);
 
+    // helper method for Enter key Convenience
     const enterKey = (e) => {
         if (e.key === "Enter")
             document.querySelector("#enter").firstElementChild.click();
     };
+    // Delete Active Contact
     const removeActive = (num) => {
         setActiveData(activeData.filter((user) => !(user.number === num)));
     };
+    // Play Beep Sound
     function beep() {
         if (!sound) return;
         var snd = new Audio(
@@ -66,6 +89,7 @@ const online = () => {
         snd.play();
     }
 
+    // MAIN method Onclick fn
     const getstatus = async (
         targetname = "target",
         targetnumber = "",
@@ -105,7 +129,7 @@ const online = () => {
             console.error(error);
         }
     };
-
+    ////////////////////////////// Render //////////////////////////////////////
     return (
         <Page name='Status check'>
             <Navbar title='Whatsapp Status Checker' backLink='Back' />
