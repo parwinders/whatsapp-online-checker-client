@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ListItem } from "framework7-react";
 import axios from "axios";
+import { API_BASE_URL } from "./constant";
 
 const UserElement = ({ user, remove, beep }) => {
     const [userP, setUserP] = useState(user);
@@ -8,11 +9,8 @@ const UserElement = ({ user, remove, beep }) => {
     useEffect(() => {
         const mount = { val: true };
         const sub = async () => {
-            // console.log("updated from userelement", userP.name);
             await axios
-                .get(
-                    "https://serene-sierra-48167.herokuapp.com/" + userP.number
-                )
+                .get(API_BASE_URL + userP.number)
                 .then((res) => {
                     const status =
                         res.data.status === "available" ? "online" : "offline";
@@ -33,7 +31,7 @@ const UserElement = ({ user, remove, beep }) => {
         console.log(id, "started for", userP.name);
 
         return () => {
-            // console.log("unmounted")
+            // Cleanup Function
             mount.val = false;
             clearInterval(id);
             console.warn("cleared setInterval -- cleanup ", id);

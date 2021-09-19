@@ -16,10 +16,11 @@ import {
     BlockTitle,
     Icon,
 } from "framework7-react";
+import { API_BASE_URL, UPDATE_URL } from "./constant";
 import Active from "./active";
 
 const online = () => {
-    const BaseUrl = "https://serene-sierra-48167.herokuapp.com/";
+    const BaseUrl = API_BASE_URL;
     const [sound, setSound] = useState(true);
     const [progress, setProgress] = useState(false);
     const [targetname, setTargetname] = useState("");
@@ -28,9 +29,7 @@ const online = () => {
     // On component mount
     useEffect(() => {
         // Get version Match:Update
-        let fetch = axios.get(
-            "https://raw.githubusercontent.com/parwinders/version/main/README.md"
-        );
+        let fetch = axios.get(UPDATE_URL);
         fetch.then((res) => {
             let gotVer;
             console.info("Latest version:", (gotVer = res.data.split("\n")[0]));
