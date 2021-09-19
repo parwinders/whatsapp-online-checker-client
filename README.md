@@ -1,5 +1,5 @@
 # WhatsUp - WhatsApp Online Last seen Tracker 
-### version:1.0.0
+### version:1.0.1
 
 `Demo`: https://parwinders.github.io/whatsapp-online-checker-client/
 
